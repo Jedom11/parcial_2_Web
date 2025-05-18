@@ -4,6 +4,7 @@ import {
   Column,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Resenia } from '../resenia/resenia.entity';
 import { Estudiante } from '../estudiante/estudiante.entity';
@@ -28,6 +29,9 @@ export class Actividad {
   @OneToMany(() => Resenia, (resenia) => resenia.actividad)
   resenias: Resenia[];
 
-  @ManyToMany(() => Estudiante, (estudiante) => estudiante.actividades)
+  @ManyToMany(() => Estudiante, (estudiante) => estudiante.actividades, {
+    cascade: true,
+  })
+  @JoinTable()
   inscritos: Estudiante[];
 }

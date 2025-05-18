@@ -15,7 +15,8 @@ import {
 @Injectable()
 export class EstudianteService {
   constructor(
-    @InjectRepository(Estudiante) private estudianteRepo: Repository<Estudiante>,
+    @InjectRepository(Estudiante)
+    private estudianteRepo: Repository<Estudiante>,
     @InjectRepository(Actividad) private actividadRepo: Repository<Actividad>,
   ) {}
 
@@ -106,14 +107,14 @@ export class EstudianteService {
   async inscribirseActividad(
     estudianteId: number,
     actividadId: number,
-  ): Promise<string> {
+  ): Promise<Estudiante> {
     const estudiante = await this.estudianteRepo.findOne({
       where: { id: estudianteId },
       relations: ['actividades'],
     });
     const actividad = await this.actividadRepo.findOne({
       where: { id: actividadId },
-      relations: ['estudiantes'],
+      relations: ['inscritos'],
     });
 
     if (!estudiante || !actividad)
@@ -131,7 +132,8 @@ export class EstudianteService {
       throw new BadRequestException('Ya estás inscrito en esta actividad');
 
     actividad.inscritos.push(estudiante);
-    await this.actividadRepo.save(actividad);
-    return 'Inscripción exitosa';
+    actividad.cupoMaximo -= 1;
+    estudiante.actividades.push(actividad);
+    return await this.estudianteRepo.save(estudiante);
   }
 }

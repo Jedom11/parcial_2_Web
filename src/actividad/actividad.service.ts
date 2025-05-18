@@ -79,7 +79,6 @@ export class ActividadService {
    */
   async crearActividad(data: Partial<Actividad>): Promise<Actividad> {
     const sinSimbolos = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/;
-
     if (
       !data.titulo ||
       data.titulo.length < 15 ||
@@ -98,12 +97,11 @@ export class ActividadService {
   async cambiarEstado(id: number, nuevoEstado: number): Promise<string> {
     const actividad = await this.actividadRepo.findOne({
       where: { id },
-      relations: ['estudiantes'],
+      relations: ['inscritos'],
     });
     if (!actividad) throw new NotFoundException('Actividad no encontrada');
 
     const porcentajeLleno = actividad.inscritos.length / actividad.cupoMaximo;
-
     if (nuevoEstado === 1 && porcentajeLleno < 0.8) {
       throw new BadRequestException(
         'Solo se puede cerrar si al menos 80% del cupo está lleno',

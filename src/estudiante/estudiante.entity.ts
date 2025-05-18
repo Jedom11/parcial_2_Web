@@ -27,8 +27,5 @@ export class Estudiante {
   resenias: Resenia[];
 
   @ManyToMany(() => Actividad, (actividad) => actividad.inscritos)
-
-  @JoinTable()
-  
   actividades: Actividad[];
 }
