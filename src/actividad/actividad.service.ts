@@ -107,7 +107,6 @@ export class ActividadService {
         'Solo se puede cerrar si al menos 80% del cupo está lleno',
       );
     }
-
     if (
       nuevoEstado === 2 &&
       actividad.inscritos.length < actividad.cupoMaximo

@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActividadController } from './actividad.controller';
 
 @Module({
-  providers: [ActividadService],
   imports: [TypeOrmModule.forFeature([Actividad])],
+  providers: [ActividadService],
   controllers: [ActividadController],
 })
 export class ActividadModule {}

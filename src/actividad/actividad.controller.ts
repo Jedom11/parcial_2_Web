@@ -15,6 +15,11 @@ export class ActividadController {
     return await this.actividadService.findAll();
   }
 
+  @Get('bydate')
+  async findAllActividadesByDate(@Query('fecha') fecha: string): Promise<Actividad[]> {
+    return await this.actividadService.findAllActividadesByDate(fecha);
+  }
+
   @Get(':actividadId')
   async findOne(@Param('actividadId') actividadId: number) {
     return await this.actividadService.findOne(actividadId);
@@ -31,11 +36,5 @@ export class ActividadController {
     const { actividadId, estado } = cambiarEstadoDto;
     const mensaje = await this.actividadService.cambiarEstado(actividadId, estado);
     return { message: mensaje };
-  }
-
-  @Get('bydate')
-  async findByDate(@Body('fecha') fecha: string): Promise<Actividad[]> {
-    console.log("ERROR ACÁ?", fecha)
-    return await this.actividadService.findAllActividadesByDate(fecha);
   }
 }

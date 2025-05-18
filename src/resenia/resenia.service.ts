@@ -87,11 +87,11 @@ export class ReseniaService {
     });
     const actividad = await this.actividadRepo.findOne({
       where: { id: actividadId },
+      relations: ['inscritos'],
     });
 
     if (!estudiante || !actividad)
       throw new NotFoundException('Estudiante o actividad no encontrada');
-
     const inscrito = estudiante.actividades.some((a) => a.id === actividad.id);
     if (!inscrito)
       throw new BadRequestException(

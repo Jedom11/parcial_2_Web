@@ -107,14 +107,15 @@ export class EstudianteService {
   async inscribirseActividad(
     estudianteId: number,
     actividadId: number,
-  ): Promise<Estudiante> {
+  ): Promise<any> {
     const estudiante = await this.estudianteRepo.findOne({
       where: { id: estudianteId },
-      relations: ['actividades'],
+      relations: ['actividades', 'resenias'],
     });
+
     const actividad = await this.actividadRepo.findOne({
       where: { id: actividadId },
-      relations: ['inscritos'],
+      relations: ['inscritos', 'resenias'],
     });
 
     if (!estudiante || !actividad)
@@ -131,9 +132,33 @@ export class EstudianteService {
     if (yaInscrito)
       throw new BadRequestException('Ya estás inscrito en esta actividad');
 
-    actividad.inscritos.push(estudiante);
-    actividad.cupoMaximo -= 1;
-    estudiante.actividades.push(actividad);
-    return await this.estudianteRepo.save(estudiante);
+    estudiante.actividades = [...estudiante.actividades, actividad];
+    await this.estudianteRepo.save(estudiante);
+
+    const estudianteActualizado = await this.estudianteRepo.findOne({
+      where: { id: estudianteId },
+      relations: ['actividades', 'resenias'],
+    });
+
+    const actividadActualizada = await this.actividadRepo.findOne({
+      where: { id: actividadId },
+      relations: ['inscritos', 'resenias'],
+    });
+    
+    return {
+      message: 'Inscripción exitosa',
+      estudiante: {
+        id: estudiante.id,
+        nombre: estudiante.nombre,
+        correo: estudiante.correo,
+        actividades: estudianteActualizado?.actividades || []
+      },
+      actividad: {
+        id: actividad.id,
+        titulo: actividad.titulo,
+        fecha: actividad.fecha,
+        inscritos: actividadActualizada?.inscritos || []
+      }
+    };
   }
 }

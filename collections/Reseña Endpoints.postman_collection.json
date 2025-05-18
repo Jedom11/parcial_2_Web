@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "2b32e2e5-3c36-4493-af0f-6d9b3c75bcf3",
+		"name": "Reseña Endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27686766"
+	},
+	"item": [
+		{
+			"name": "Agregar Reseña",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.id).to.exist;\r",
+							"    pm.expect(responseData.comentario).to.exist;\r",
+							"    pm.expect(responseData.calificacion).to.exist;\r",
+							"    pm.expect(responseData.fecha).to.exist;\r",
+							"    pm.expect(responseData.estudiante).to.exist;\r",
+							"    pm.expect(responseData.actividad).to.exist;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the estudiante object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.estudiante.id).to.be.a('number');\r",
+							"    pm.expect(responseData.estudiante.cedula).to.be.a('number');\r",
+							"    pm.expect(responseData.estudiante.nombre).to.be.a('string');\r",
+							"    pm.expect(responseData.estudiante.correo).to.be.a('string');\r",
+							"    pm.expect(responseData.estudiante.programa).to.be.a('string');\r",
+							"    pm.expect(responseData.estudiante.semestre).to.be.a('number');\r",
+							"    \r",
+							"    pm.expect(responseData.estudiante.actividades).to.be.an('array');\r",
+							"    responseData.estudiante.actividades.forEach(function(actividad) {\r",
+							"        pm.expect(actividad.id).to.be.a('number');\r",
+							"        pm.expect(actividad.titulo).to.be.a('string');\r",
+							"        pm.expect(actividad.fecha).to.be.a('string');\r",
+							"        pm.expect(actividad.cupoMaximo).to.be.a('number');\r",
+							"        pm.expect(actividad.estado).to.be.a('number');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the actividad object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData.actividad).to.be.an('object');\r",
+							"    pm.expect(responseData.actividad.id).to.exist;\r",
+							"    pm.expect(responseData.actividad.titulo).to.exist;\r",
+							"    pm.expect(responseData.actividad.fecha).to.exist;\r",
+							"    pm.expect(responseData.actividad.cupoMaximo).to.exist;\r",
+							"    pm.expect(responseData.actividad.estado).to.exist;\r",
+							"    pm.expect(responseData.actividad.inscritos).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"estudianteId\": 1,\r\n        \"actividadId\": 1,\r\n        \"comentario\": \"Esta es una reseña valida\",\r\n        \"calificacion\": 5,\r\n        \"fecha\": \"2025-05-25\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/resenia",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"resenia"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
