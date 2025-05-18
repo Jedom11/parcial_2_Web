@@ -5,8 +5,8 @@ import {
   OneToMany,
   ManyToMany,
 } from 'typeorm';
-import { Resenia } from 'src/resenia/resenia.entity';
-import { Estudiante } from 'src/estudiante/estudiante.entity';
+import { Resenia } from '../resenia/resenia.entity';
+import { Estudiante } from '../estudiante/estudiante.entity';
 
 @Entity()
 export class Actividad {
@@ -29,5 +29,5 @@ export class Actividad {
   resenias: Resenia[];
 
   @ManyToMany(() => Estudiante, (estudiante) => estudiante.actividades)
-  estudiantes: Estudiante[];
+  inscritos: Estudiante[];
 }

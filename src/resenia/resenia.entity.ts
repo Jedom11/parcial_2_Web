@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Estudiante } from 'src/estudiante/estudiante.entity';
-import { Actividad } from 'src/actividad/actividad.entity';
+import { Estudiante } from '../estudiante/estudiante.entity';
+import { Actividad } from '../actividad/actividad.entity';
 
 @Entity()
 export class Resenia {
@@ -16,7 +16,7 @@ export class Resenia {
   @Column()
   fecha: string;
 
-  @ManyToOne(() => Estudiante, (estudiante) => estudiante.reseñas, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Estudiante, (estudiante) => estudiante.resenias, { onDelete: 'CASCADE' })
   estudiante: Estudiante;
 
   @ManyToOne(() => Actividad, (actividad) => actividad.resenias, { onDelete: 'CASCADE' })

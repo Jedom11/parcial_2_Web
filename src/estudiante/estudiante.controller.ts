@@ -7,4 +7,8 @@ export class EstudianteController {
   constructor(private readonly estudianteService: EstudianteService,
     private readonly actividadService: ActividadService
   ) {}
+
+  @Post()
+  inscribirseActividad(idActividad: number, idEstudiante: number) {
+  }
 }
